@@ -62,7 +62,7 @@ h1 {
   font-size: 14.5px;
   color: var(--ink-soft);
   margin: 0 0 32px;
-  max-width: 640px;
+  max-width: 660px;
   line-height: 1.55;
 }
 .lede em { font-style: italic; color: var(--ink); }
@@ -98,15 +98,49 @@ h1 {
   line-height: 1.45;
 }
 
-/* Meta panel — visually distinct */
+/* Meta panel — visually distinct, collapsible */
 .meta-panel {
   background: var(--meta-surface);
   border-color: #dde2eb;
+  transition: padding-bottom 320ms ease;
 }
 .meta-panel .section-label { color: var(--meta-accent-deep); }
 .meta-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
   margin-bottom: 14px;
+  transition: margin-bottom 320ms ease;
 }
+.meta-head-text { flex: 1; }
+.meta-toggle {
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid #dde2eb;
+  border-radius: 999px;
+  padding: 5px 12px;
+  cursor: pointer;
+  color: var(--meta-accent-deep);
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.meta-toggle:hover { background: #e2e8f0; border-color: var(--meta-accent); color: var(--meta-accent-deep); }
+.meta-components-wrap {
+  overflow: hidden;
+  max-height: 600px;
+  opacity: 1;
+  transition: max-height 380ms cubic-bezier(.4,.05,.2,1), opacity 280ms ease;
+}
+.meta-panel.collapsed .meta-components-wrap {
+  max-height: 0;
+  opacity: 0;
+}
+.meta-panel.collapsed .meta-head { margin-bottom: 0; }
+.meta-panel.collapsed { padding-bottom: 22px; }
 .meta-components {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -141,7 +175,28 @@ h1 {
 }
 .meta-component.live .meta-component-desc { color: var(--ink-soft); opacity: 1; }
 
-/* Connector between meta and lifecycle */
+/* Activity pulse on meta head when meta is doing live work */
+.meta-pulse {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--meta-accent);
+  margin-right: 6px;
+  vertical-align: middle;
+  opacity: 0;
+  transition: opacity 280ms ease;
+}
+.meta-panel.active .meta-pulse {
+  opacity: 1;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+/* Flow indicator between meta and architecture */
 .flow-connector {
   display: flex;
   justify-content: center;
@@ -162,7 +217,6 @@ h1 {
   transition: opacity 320ms ease, color 320ms ease;
 }
 .flow-arrow.live { opacity: 1; color: var(--meta-accent-deep); }
-.flow-arrow.live-down { opacity: 1; color: var(--meta-accent-deep); }
 .flow-arrow.live-up { opacity: 1; color: var(--accent-deep); }
 .flow-line {
   position: absolute;
@@ -174,10 +228,67 @@ h1 {
   z-index: -1;
 }
 
-/* Lifecycle panel — narrative block; reserved heights so System Architecture below doesn't shift between phases */
+/* Architecture */
+.layer {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 22px;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--rule);
+  align-items: start;
+}
+.layer:first-child { padding-top: 4px; }
+.layer:last-child { border-bottom: none; padding-bottom: 4px; }
+.layer-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding-top: 12px;
+}
+.components {
+  display: grid;
+  gap: 10px;
+}
+.components.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.components.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.component {
+  background: var(--dim-fill);
+  border: 1px solid var(--dim-stroke);
+  color: var(--dim-text);
+  border-radius: 9px;
+  padding: 12px 14px;
+  transition: background 320ms ease, border-color 320ms ease, color 320ms ease, box-shadow 320ms ease, transform 320ms ease;
+  position: relative;
+  min-height: 96px;
+}
+.component-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  margin-bottom: 5px;
+}
+.component-desc {
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: inherit;
+  opacity: 0.92;
+}
+.component.live {
+  background: var(--live-fill);
+  border-color: var(--live-stroke);
+  color: var(--live-text);
+  box-shadow: 0 0 0 1px rgba(201,122,75,0.20), 0 6px 18px -8px rgba(201,122,75,0.35);
+  transform: translateY(-0.5px);
+}
+.component.live .component-desc { color: var(--ink-soft); opacity: 1; }
+
+/* Lifecycle — narrative block */
 .phase-head { margin-bottom: 16px; }
 .phase-title { min-height: 24px; }
-.phase-narrative { min-height: 108px; }
+.phase-narrative { min-height: 118px; }
 .phase-meta {
   font-size: 10.5px;
   font-weight: 600;
@@ -343,62 +454,6 @@ h1 {
 .btn.live { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn.live:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
 
-/* Architecture */
-.layer {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 22px;
-  padding: 16px 0;
-  border-bottom: 1px dashed var(--rule);
-  align-items: start;
-}
-.layer:first-child { padding-top: 4px; }
-.layer:last-child { border-bottom: none; padding-bottom: 4px; }
-.layer-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  padding-top: 12px;
-}
-.components {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-.component {
-  background: var(--dim-fill);
-  border: 1px solid var(--dim-stroke);
-  color: var(--dim-text);
-  border-radius: 9px;
-  padding: 12px 14px;
-  transition: background 320ms ease, border-color 320ms ease, color 320ms ease, box-shadow 320ms ease, transform 320ms ease;
-  position: relative;
-  min-height: 96px;
-}
-.component-name {
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  margin-bottom: 5px;
-}
-.component-desc {
-  font-size: 11px;
-  font-weight: 400;
-  line-height: 1.45;
-  color: inherit;
-  opacity: 0.92;
-}
-.component.live {
-  background: var(--live-fill);
-  border-color: var(--live-stroke);
-  color: var(--live-text);
-  box-shadow: 0 0 0 1px rgba(201,122,75,0.20), 0 6px 18px -8px rgba(201,122,75,0.35);
-  transform: translateY(-0.5px);
-}
-.component.live .component-desc { color: var(--ink-soft); opacity: 1; }
-
 /* Footer */
 .foot {
   font-size: 11px;
@@ -410,7 +465,7 @@ h1 {
 
 @media (max-width: 720px) {
   .layer { grid-template-columns: 1fr; gap: 8px; }
-  .components { grid-template-columns: 1fr; }
+  .components.cols-3, .components.cols-4 { grid-template-columns: 1fr; }
   .meta-components { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
@@ -420,25 +475,37 @@ h1 {
 
   <div class="eyebrow">POC concept · design ops for AI-first orgs</div>
   <h1>AI-first design thinking — system architecture</h1>
-  <p class="lede">Design thinking's principles are durable. The event itself is fundamentally <em>humans coming together to discuss something that matters</em> — to frame a problem, choose a direction, commit to action. What's becoming re-architectable is the <em>meta</em> — how those humans are supported, surrounded, and accelerated by AI through that work, and how the practice itself learns over time. Scrub the lifecycle to see what the system does at each stage.</p>
+  <p class="lede">Design thinking's principles are durable. The event itself is fundamentally <em>humans coming together to discuss something that matters</em> — to frame a problem, choose a direction, commit to action. What's becoming re-architectable is the <em>meta</em> — how those humans are supported, surrounded, and accelerated by AI; how their collective toolkit grows as they go; and how the practice itself learns over time. Scrub the lifecycle to see what the system does at each stage.</p>
 
   <!-- META PANEL -->
-  <div class="panel meta-panel">
+  <div class="panel meta-panel" id="meta-panel">
     <div class="meta-head">
-      <div class="section-label">Meta · Workshop architect</div>
-      <div class="section-sub">Sits outside the workshop. Takes intent from the facilitator, consults its pattern library, composes a tuned instance, then learns from each session.</div>
+      <div class="meta-head-text">
+        <div class="section-label"><span class="meta-pulse"></span>Meta · Workshop architect</div>
+        <div class="section-sub">Sits outside the workshop. Takes intent from the facilitator, consults its pattern library, composes a tuned instance, then learns from each session.</div>
+      </div>
+      <button class="meta-toggle" id="meta-toggle">Hide meta</button>
     </div>
-    <div class="meta-components" id="meta-arch"></div>
+    <div class="meta-components-wrap">
+      <div class="meta-components" id="meta-arch"></div>
+    </div>
   </div>
 
-  <!-- FLOW INDICATOR between meta and lifecycle -->
+  <!-- FLOW INDICATOR -->
   <div class="flow-connector">
     <div class="flow-line"></div>
-    <div class="flow-arrow" id="flow-spawn">↓ spawning this instance</div>
+    <div class="flow-arrow" id="flow-spawn">↓ spawning this architecture</div>
     <div class="flow-arrow" id="flow-feedback">↑ feedback returning to architect</div>
   </div>
 
-  <!-- LIFECYCLE PANEL -->
+  <!-- ARCHITECTURE PANEL -->
+  <div class="panel">
+    <div class="section-label" style="margin-bottom: 4px;">System architecture — this workshop's instance</div>
+    <div class="section-sub" style="margin-bottom: 10px;">Thirteen subsystems that listen, surface, capture, render, and pool — supporting the humans in the room.</div>
+    <div id="arch"></div>
+  </div>
+
+  <!-- LIFECYCLE PANEL — now at bottom, acts as the scrub control -->
   <div class="panel">
     <div class="panel-head">
       <div>
@@ -480,14 +547,7 @@ h1 {
     </div>
   </div>
 
-  <!-- ARCHITECTURE PANEL -->
-  <div class="panel">
-    <div class="section-label" style="margin-bottom: 4px;">System architecture — this workshop's instance</div>
-    <div class="section-sub" style="margin-bottom: 10px;">Twelve subsystems that listen, surface, capture, and render — supporting the humans in the room.</div>
-    <div id="arch"></div>
-  </div>
-
-  <div class="foot">POC concept — scrubable system view · v0.4 · humans at the center; agents support, surround, and accelerate</div>
+  <div class="foot">POC concept — scrubable system view · v0.5 · adds the shared skill exchange; meta collapses when not active</div>
 
 </div>
 
@@ -515,7 +575,8 @@ const LAYERS = [
   { id: 'context', label: 'Context', components: [
     { id: 'delegate-agents', name: 'Delegate agents' },
     { id: 'indexed-ip', name: 'Indexed org IP' },
-    { id: 'pre-event-research', name: 'Pre-event research' }
+    { id: 'pre-event-research', name: 'Pre-event research' },
+    { id: 'skill-exchange', name: 'Skill exchange' }
   ]},
   { id: 'intelligence', label: 'Intelligence', components: [
     { id: 'research-agents', name: 'Research agents' },
@@ -536,6 +597,7 @@ const BASELINE = {
   'delegate-agents':     'One per participant; prompted from pre-event responses, voice-enrolled.',
   'indexed-ip':          'Prior workshops, research, internal docs — all searchable in real time.',
   'pre-event-research':  'Primary and secondary research, synthesized for the workshop focus.',
+  'skill-exchange':      'High-availability pool of skills, prompts, and agents contributed by participants. Grows during the workshop; available to all.',
   'research-agents':     'Live retrieval — pulls evidence into the room on demand.',
   'facilitator':         'Manages agenda flow; enforces convergence when divergence has run.',
   'sense-making':        'Continuous model of where the workshop is and what state it\'s in.',
@@ -547,7 +609,7 @@ const BASELINE = {
 const PHASES = [
   {
     n: 0, label: 'Spawn', meta: 'Spawn', title: 'Workshop architect spawns this instance',
-    narrative: 'Before each workshop, the architect takes intent from the facilitator, consults its pattern library, and composes this workshop\'s tuned instance. Subsystem emphasis, agent personalities, lifecycle pacing — all set per workshop. <em>The architecture below is the result — twelve subsystems that will support the humans about to gather.</em> The architect sits outside the workshop and learns from each session, improving the next.',
+    narrative: 'Before each workshop, the architect takes intent from the facilitator, consults its pattern library, and composes this workshop\'s tuned instance. Subsystem emphasis, agent personalities, lifecycle pacing — all set per workshop. <em>The architecture below is the result — thirteen subsystems that will support the humans about to gather.</em> The architect sits outside the workshop and learns from each session, improving the next.',
     metaActive: {
       'intent-intake':   'Receiving the facilitator\'s brief for this workshop.',
       'pattern-library': 'Matching against prior configurations that worked for similar intents.',
@@ -558,12 +620,13 @@ const PHASES = [
   },
   {
     n: 1, label: 'Pre-event', meta: 'Phase 1 of 8', title: 'Pre-event preparation',
-    narrative: 'The workshop instance prepares before the humans arrive. Org IP is indexed for live retrieval. Pre-event research is synthesized into briefing material. Each participant\'s position-prompt responses become a delegate agent enrolled with their voiceprint — an extension of that human into the session, never a replacement for them.',
+    narrative: 'The workshop instance prepares before the humans arrive. Org IP is indexed for live retrieval. Pre-event research is synthesized into briefing material. Each participant\'s position-prompt responses become a delegate agent enrolled with their voiceprint — an extension of that human into the session, never a replacement. <em>The skill exchange is seeded</em> with whatever skills, prompts, and agents each participant chose to contribute ahead of time.',
     metaActive: {},
     active: {
       'delegate-agents':    'Being generated from each participant\'s position-prompt responses and voice samples.',
       'indexed-ip':         'Indexing org docs, prior workshops, and prior research so they\'re queryable mid-session.',
-      'pre-event-research': 'Synthesizing primary and secondary research into briefing materials for the opening.'
+      'pre-event-research': 'Synthesizing primary and secondary research into briefing materials for the opening.',
+      'skill-exchange':     'Seeded with each participant\'s contributed skills + the org\'s available library.'
     },
     marker: { x: 120, y: 50 }, flat: 'pre', diamond: null, flow: null
   },
@@ -576,13 +639,14 @@ const PHASES = [
       'transcription':   'Producing the live transcript stream.',
       'diarization':     'Tagging each utterance to its participant in real time.',
       'delegate-agents': 'Listening alongside their humans. Calibrating against live responses to the opening research.',
-      'sense-making':    'Building the initial workshop-state model from opening dynamics.'
+      'sense-making':    'Building the initial workshop-state model from opening dynamics.',
+      'skill-exchange':  'Inventory shown to the room — participants see what\'s available to draw on.'
     },
     marker: { x: 195, y: 50 }, flat: 'pre', diamond: null, flow: null
   },
   {
     n: 3, label: 'Problem diverge', meta: 'Phase 3 of 8', title: 'Problem-space divergence',
-    narrative: 'The humans are framing the problem. Delegate agents contribute alongside their participants — extending what each person can put into the room without adding more bodies to it. Research agents surface supporting evidence on demand. Sense-making tracks themes as the group diverges.',
+    narrative: 'The humans are framing the problem. Delegate agents contribute alongside their participants — extending what each person can put into the room without adding more bodies to it. Research agents surface supporting evidence on demand. Sense-making tracks themes as the group diverges. <em>Participants contribute new skills and prompts to the shared exchange as fresh angles emerge — the group\'s collective toolkit grows in real time.</em>',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture of all participant audio.',
@@ -590,7 +654,8 @@ const PHASES = [
       'diarization':     'Attributing every contribution to its source.',
       'delegate-agents': 'Extending each participant\'s contribution — speaking alongside their human, never in place of.',
       'research-agents': 'Pulling supporting evidence for framings as they emerge.',
-      'sense-making':    'Tracking emerging problem themes across humans and agents.'
+      'sense-making':    'Tracking emerging problem themes across humans and agents.',
+      'skill-exchange':  'Participants contribute prompts and agents as new problem angles open up. Pool grows.'
     },
     marker: { x: 250, y: 34 }, flat: null, diamond: 'problem', flow: null
   },
@@ -604,13 +669,14 @@ const PHASES = [
       'diarization':     'Attributing every contribution to its source.',
       'facilitator':     'Prompting the humans to narrow. Surfacing top framings for the group to react to.',
       'sense-making':    'Watching the group converge. Flagging when convergence is genuine vs. performed.',
-      'tangibility':     'Rendering candidate framings as visual cards for the humans to react to.'
+      'tangibility':     'Rendering candidate framings as visual cards for the humans to react to.',
+      'skill-exchange':  'Synthesis and convergence-pattern skills pulled from the pool as the group narrows.'
     },
     marker: { x: 350, y: 34 }, flat: null, diamond: 'problem', flow: null
   },
   {
     n: 5, label: 'Solution diverge', meta: 'Phase 5 of 8', title: 'Solution-space divergence',
-    narrative: 'The humans are generating solutions. Delegate agents extend each participant\'s contribution — alongside, not in place of. Research agents surface prior art and adjacent solutions so the room doesn\'t reinvent. Sense-making tracks emerging directions.',
+    narrative: 'The humans are generating solutions. Delegate agents extend each participant\'s contribution — alongside, not in place of. Research agents surface prior art and adjacent solutions so the room doesn\'t reinvent. Sense-making tracks emerging directions. <em>The exchange continues to grow as participants contribute solution-generation patterns; anyone in the room can draw on what anyone else has put in.</em>',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture.',
@@ -618,7 +684,8 @@ const PHASES = [
       'diarization':     'Attributing every contribution.',
       'delegate-agents': 'Extending each participant\'s solution candidates — alongside their human, never in place of.',
       'research-agents': 'Surfacing prior art and adjacent solutions so the room doesn\'t reinvent.',
-      'sense-making':    'Tracking emerging solution directions.'
+      'sense-making':    'Tracking emerging solution directions.',
+      'skill-exchange':  'Solution-generation skills flow in. Any participant\'s contribution becomes available to all.'
     },
     marker: { x: 450, y: 34 }, flat: null, diamond: 'solution', flow: null
   },
@@ -632,7 +699,8 @@ const PHASES = [
       'diarization':     'Attributing every contribution.',
       'facilitator':     'Prompting the humans to commit to a direction.',
       'sense-making':    'Watching the group land. Surfacing dissent if any remains.',
-      'tangibility':     'Generating solution mockups in real time as the humans narrow.'
+      'tangibility':     'Generating solution mockups in real time as the humans narrow.',
+      'skill-exchange':  'Mockup-generation and decision-framework skills pulled and applied.'
     },
     marker: { x: 550, y: 34 }, flat: null, diamond: 'solution', flow: null
   },
@@ -651,7 +719,7 @@ const PHASES = [
   },
   {
     n: 8, label: 'Post-event', meta: 'Phase 8 of 8', title: 'Post-event synthesis + architect learns',
-    narrative: 'The humans return to their work. Artifacts are generated and distributed. The session is indexed back into the org IP layer for the next workshop. Facilitator and participant sentiment + responses — the humans\' own read on what worked and what didn\'t — flow back to the architect; its outcomes store updates the pattern library, improving the configuration that spawns the next instance.',
+    narrative: 'The humans return to their work. Artifacts are generated and distributed. The session is indexed back into the org IP layer. <em>The skill exchange\'s grown state persists</em> — the next workshop at this org starts with every contribution made here. Facilitator and participant sentiment + responses — the humans\' own read on what worked and what didn\'t — flow back to the architect; its outcomes store updates the pattern library, improving the configuration that spawns the next instance.',
     metaActive: {
       'pattern-library': 'Updating with what worked and what didn\'t from this session — improving future configurations.',
       'outcomes-store':  'Receiving sentiment + responses from facilitator and participants.'
@@ -659,7 +727,8 @@ const PHASES = [
     active: {
       'decision-capture': 'Assembling the decision log for distribution.',
       'post-event':       'Generating the workshop\'s deliverables and distributing to participants and stakeholders.',
-      'indexed-ip':       'Re-indexing this session\'s artifacts to inform the next workshop.'
+      'indexed-ip':       'Re-indexing this session\'s artifacts to inform the next workshop.',
+      'skill-exchange':   'Pool snapshot persists — the next workshop at this org starts where this one ended.'
     },
     marker: { x: 720, y: 50 }, flat: 'post', diamond: null, flow: 'feedback'
   }
@@ -678,14 +747,15 @@ META.forEach(m => {
   metaArchEl.appendChild(cell);
 });
 
-// Build workshop architecture
+// Build workshop architecture (variable cols per layer)
 const archEl = document.getElementById('arch');
 LAYERS.forEach(layer => {
   const row = document.createElement('div');
   row.className = 'layer';
+  const colsClass = 'cols-' + layer.components.length;
   row.innerHTML = `
     <div class="layer-label">${layer.label}</div>
-    <div class="components">
+    <div class="components ${colsClass}">
       ${layer.components.map(c => `
         <div class="component" id="comp-${c.id}">
           <div class="component-name">${c.name}</div>
@@ -697,7 +767,7 @@ LAYERS.forEach(layer => {
   archEl.appendChild(row);
 });
 
-// Build phase labels under scrubber
+// Build phase labels
 const phaseLabelsEl = document.getElementById('phase-labels');
 PHASES.forEach((p, i) => {
   const pct = (i / (PHASES.length - 1)) * 100;
@@ -728,9 +798,30 @@ const phaseTitleEl = document.getElementById('phase-title');
 const phaseNarrativeEl = document.getElementById('phase-narrative');
 const flowSpawn = document.getElementById('flow-spawn');
 const flowFeedback = document.getElementById('flow-feedback');
+const metaPanel = document.getElementById('meta-panel');
+const metaToggle = document.getElementById('meta-toggle');
 
 let currentPhase = 0;
 let playTimer = null;
+
+// Meta collapse state — user can override; auto-behavior runs until user touches it
+let metaCollapsed = false;
+let userToggledMeta = false;
+
+function applyMetaCollapse() {
+  metaPanel.classList.toggle('collapsed', metaCollapsed);
+  metaToggle.textContent = metaCollapsed ? 'Show meta' : 'Hide meta';
+}
+function autoMetaForPhase(idx) {
+  if (userToggledMeta) return;
+  metaCollapsed = !(idx === 0 || idx === 8);
+  applyMetaCollapse();
+}
+metaToggle.addEventListener('click', () => {
+  metaCollapsed = !metaCollapsed;
+  userToggledMeta = true;
+  applyMetaCollapse();
+});
 
 function setPhase(idx) {
   currentPhase = idx;
@@ -749,7 +840,14 @@ function setPhase(idx) {
     }
   });
 
-  // Workshop components — focusAll lights every component (used in Spawn state for readability)
+  // Meta panel pulse if meta is currently active
+  const metaIsActive = Object.keys(phase.metaActive).length > 0;
+  metaPanel.classList.toggle('active', metaIsActive);
+
+  // Auto-collapse/expand meta based on phase
+  autoMetaForPhase(idx);
+
+  // Workshop components — focusAll lights every component (used in Spawn for readability)
   LAYERS.forEach(layer => {
     layer.components.forEach(c => {
       const compEl = document.getElementById('comp-' + c.id);
@@ -788,7 +886,7 @@ function setPhase(idx) {
     marker.classList.remove('live');
   }
 
-  // Scrubber position
+  // Scrubber
   const pct = (idx / (PHASES.length - 1)) * 100;
   scrubberHandle.style.left = pct + '%';
   scrubberFill.style.width = pct + '%';
