@@ -420,7 +420,7 @@ h1 {
 
   <div class="eyebrow">POC concept · design ops for AI-first orgs</div>
   <h1>AI-first design thinking — system architecture</h1>
-  <p class="lede">Design thinking's principles are durable. What's becoming re-architectable is the workshop's <em>meta</em> — who participates, how context arrives in the room, how convergence is enacted, and how the practice itself learns. Scrub the lifecycle to see what the system does at each stage.</p>
+  <p class="lede">Design thinking's principles are durable. The event itself is fundamentally <em>humans coming together to discuss something that matters</em> — to frame a problem, choose a direction, commit to action. What's becoming re-architectable is the <em>meta</em> — how those humans are supported, surrounded, and accelerated by AI through that work, and how the practice itself learns over time. Scrub the lifecycle to see what the system does at each stage.</p>
 
   <!-- META PANEL -->
   <div class="panel meta-panel">
@@ -483,10 +483,11 @@ h1 {
   <!-- ARCHITECTURE PANEL -->
   <div class="panel">
     <div class="section-label" style="margin-bottom: 4px;">System architecture — this workshop's instance</div>
+    <div class="section-sub" style="margin-bottom: 10px;">Twelve subsystems that listen, surface, capture, and render — supporting the humans in the room.</div>
     <div id="arch"></div>
   </div>
 
-  <div class="foot">POC concept — scrubable system view · v0.3 · adds the workshop architect (meta layer)</div>
+  <div class="foot">POC concept — scrubable system view · v0.4 · humans at the center; agents support, surround, and accelerate</div>
 
 </div>
 
@@ -546,7 +547,7 @@ const BASELINE = {
 const PHASES = [
   {
     n: 0, label: 'Spawn', meta: 'Spawn', title: 'Workshop architect spawns this instance',
-    narrative: 'Before each workshop, the architect takes intent from the facilitator, consults its pattern library, and composes this workshop\'s tuned instance. Subsystem emphasis, agent personalities, lifecycle pacing — all set per workshop. <em>The architecture below is the result.</em> The architect sits outside the workshop and learns from each session, improving the next.',
+    narrative: 'Before each workshop, the architect takes intent from the facilitator, consults its pattern library, and composes this workshop\'s tuned instance. Subsystem emphasis, agent personalities, lifecycle pacing — all set per workshop. <em>The architecture below is the result — twelve subsystems that will support the humans about to gather.</em> The architect sits outside the workshop and learns from each session, improving the next.',
     metaActive: {
       'intent-intake':   'Receiving the facilitator\'s brief for this workshop.',
       'pattern-library': 'Matching against prior configurations that worked for similar intents.',
@@ -557,7 +558,7 @@ const PHASES = [
   },
   {
     n: 1, label: 'Pre-event', meta: 'Phase 1 of 8', title: 'Pre-event preparation',
-    narrative: 'The workshop instance prepares. Org IP is indexed for live retrieval. Pre-event research is synthesized into briefing material. Each participant\'s position-prompt responses become a delegate agent enrolled with their voiceprint.',
+    narrative: 'The workshop instance prepares before the humans arrive. Org IP is indexed for live retrieval. Pre-event research is synthesized into briefing material. Each participant\'s position-prompt responses become a delegate agent enrolled with their voiceprint — an extension of that human into the session, never a replacement for them.',
     metaActive: {},
     active: {
       'delegate-agents':    'Being generated from each participant\'s position-prompt responses and voice samples.',
@@ -568,26 +569,26 @@ const PHASES = [
   },
   {
     n: 2, label: 'Opening', meta: 'Phase 2 of 8', title: 'Workshop opens',
-    narrative: 'Voice ingest, transcription, and diarization come online together. Delegate agents listen. The sense-making layer watches each participant\'s real-time response to the opening research share — calibrating each delegate against its human\'s actual reactions, not just pre-event answers.',
+    narrative: 'The humans gather. Voice ingest, transcription, and diarization come online to capture them as they enter the conversation. Delegate agents listen alongside their humans, calibrating against each participant\'s real-time response to the opening research — so what each delegate can later contribute is grounded in what its human actually thinks today, not just pre-event answers.',
     metaActive: {},
     active: {
       'voice-ingest':    'Audio streams begin from every connected participant.',
       'transcription':   'Producing the live transcript stream.',
       'diarization':     'Tagging each utterance to its participant in real time.',
-      'delegate-agents': 'Listening. Calibrating their model of their human against live responses to opening research.',
+      'delegate-agents': 'Listening alongside their humans. Calibrating against live responses to the opening research.',
       'sense-making':    'Building the initial workshop-state model from opening dynamics.'
     },
     marker: { x: 195, y: 50 }, flat: 'pre', diamond: null, flow: null
   },
   {
     n: 3, label: 'Problem diverge', meta: 'Phase 3 of 8', title: 'Problem-space divergence',
-    narrative: 'The Intelligence layer takes over. Delegate agents contribute problem framings in parallel with their humans — doubling effective participation without doubling people in the room. Research agents pull supporting evidence on demand. Sense-making tracks emerging themes.',
+    narrative: 'The humans are framing the problem. Delegate agents contribute alongside their participants — extending what each person can put into the room without adding more bodies to it. Research agents surface supporting evidence on demand. Sense-making tracks themes as the group diverges.',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture of all participant audio.',
       'transcription':   'Live transcript continues.',
       'diarization':     'Attributing every contribution to its source.',
-      'delegate-agents': 'Contributing problem framings in parallel with their humans.',
+      'delegate-agents': 'Extending each participant\'s contribution — speaking alongside their human, never in place of.',
       'research-agents': 'Pulling supporting evidence for framings as they emerge.',
       'sense-making':    'Tracking emerging problem themes across humans and agents.'
     },
@@ -595,27 +596,27 @@ const PHASES = [
   },
   {
     n: 4, label: 'Problem converge', meta: 'Phase 4 of 8', title: 'Problem-space convergence',
-    narrative: 'The system shifts from generation to selection. The facilitator agent prompts the group to narrow. The tangibility surface renders candidate problem statements as visual cards the group can react to. Sense-making watches for genuine convergence versus performance — and flags the latter.',
+    narrative: 'The humans are narrowing toward a problem statement. The facilitator agent prompts the group toward selection; the tangibility surface renders candidate framings as visual cards the people in the room can react to. Sense-making watches for genuine convergence versus performance — surfacing the latter to the facilitator. <em>The system supports the decision; it doesn\'t make it.</em>',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture of all participant audio.',
       'transcription':   'Live transcript continues.',
       'diarization':     'Attributing every contribution to its source.',
-      'facilitator':     'Prompting the group to narrow. Surfacing the top framings for selection.',
-      'sense-making':    'Flagging whether convergence is genuine or performed.',
-      'tangibility':     'Rendering candidate problem statements as visual cards.'
+      'facilitator':     'Prompting the humans to narrow. Surfacing top framings for the group to react to.',
+      'sense-making':    'Watching the group converge. Flagging when convergence is genuine vs. performed.',
+      'tangibility':     'Rendering candidate framings as visual cards for the humans to react to.'
     },
     marker: { x: 350, y: 34 }, flat: null, diamond: 'problem', flow: null
   },
   {
     n: 5, label: 'Solution diverge', meta: 'Phase 5 of 8', title: 'Solution-space divergence',
-    narrative: 'Same pattern as problem-diverge, in the solution space. Delegate agents propose solutions alongside their humans. Research agents surface prior art so the group doesn\'t reinvent. Sense-making tracks emerging directions.',
+    narrative: 'The humans are generating solutions. Delegate agents extend each participant\'s contribution — alongside, not in place of. Research agents surface prior art and adjacent solutions so the room doesn\'t reinvent. Sense-making tracks emerging directions.',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture.',
       'transcription':   'Live transcript continues.',
       'diarization':     'Attributing every contribution.',
-      'delegate-agents': 'Proposing solution candidates alongside their humans.',
+      'delegate-agents': 'Extending each participant\'s solution candidates — alongside their human, never in place of.',
       'research-agents': 'Surfacing prior art and adjacent solutions so the room doesn\'t reinvent.',
       'sense-making':    'Tracking emerging solution directions.'
     },
@@ -623,34 +624,34 @@ const PHASES = [
   },
   {
     n: 6, label: 'Solution converge', meta: 'Phase 6 of 8', title: 'Solution-space convergence',
-    narrative: 'The facilitator narrows. The tangibility surface generates solution mockups in real time so the group reacts to concrete artifacts, not arm-wave concepts. Convergence is enacted visually.',
+    narrative: 'The humans are choosing a direction. The facilitator agent prompts narrowing. The tangibility surface generates solution mockups in real time so the people in the room react to concrete artifacts, not arm-wave concepts. <em>The humans commit; the system makes their commitment visible.</em>',
     metaActive: {},
     active: {
       'voice-ingest':    'Continuous capture.',
       'transcription':   'Live transcript continues.',
       'diarization':     'Attributing every contribution.',
-      'facilitator':     'Narrowing toward the strongest solution direction.',
-      'sense-making':    'Confirming convergence quality and surfacing dissent.',
-      'tangibility':     'Generating solution mockups in real time as candidates take shape.'
+      'facilitator':     'Prompting the humans to commit to a direction.',
+      'sense-making':    'Watching the group land. Surfacing dissent if any remains.',
+      'tangibility':     'Generating solution mockups in real time as the humans narrow.'
     },
     marker: { x: 550, y: 34 }, flat: null, diamond: 'solution', flow: null
   },
   {
     n: 7, label: 'Decision', meta: 'Phase 7 of 8', title: 'Decision and close',
-    narrative: 'The decision-capture layer crystallizes each commitment with owner and timeline. The facilitator drives close. Voice ingest is still running — capturing final commitments verbatim.',
+    narrative: 'The humans are making commitments. The facilitator agent prompts close, confirming the owners and timelines as the participants state them. Decision capture crystallizes each commitment verbatim from the human who owns it.',
     metaActive: {},
     active: {
       'voice-ingest':     'Capturing final commitments verbatim.',
       'transcription':    'Final transcript stream.',
       'diarization':      'Attributing each commitment to its owner.',
-      'facilitator':      'Driving close. Confirming owners and timelines.',
-      'decision-capture': 'Crystallizing each commitment with owner, timeline, and dependencies.'
+      'facilitator':      'Driving close. Confirming the owners and timelines the humans state.',
+      'decision-capture': 'Crystallizing each commitment verbatim from the human who owns it.'
     },
     marker: { x: 640, y: 50 }, flat: 'post', diamond: null, flow: null
   },
   {
     n: 8, label: 'Post-event', meta: 'Phase 8 of 8', title: 'Post-event synthesis + architect learns',
-    narrative: 'The workshop completes and the loop closes. Artifacts are generated. The session is indexed back into the org IP layer for the next workshop. Facilitator and participant sentiment + responses flow back to the architect — its outcomes store updates the pattern library, improving the configuration that spawns the next instance.',
+    narrative: 'The humans return to their work. Artifacts are generated and distributed. The session is indexed back into the org IP layer for the next workshop. Facilitator and participant sentiment + responses — the humans\' own read on what worked and what didn\'t — flow back to the architect; its outcomes store updates the pattern library, improving the configuration that spawns the next instance.',
     metaActive: {
       'pattern-library': 'Updating with what worked and what didn\'t from this session — improving future configurations.',
       'outcomes-store':  'Receiving sentiment + responses from facilitator and participants.'
