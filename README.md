@@ -1,32 +1,30 @@
 # AI-first design thinking — system architecture
 
-An interactive system diagram for running design thinking workshops at AI-first organizations.
+An interactive scrollytelling system diagram for running design thinking workshops at AI-first organizations.
 
-**Live demo:** _enable GitHub Pages on this repo; see Setup below_
+**Live demo:** [designisagoodidea-2026.github.io/claude-dt-system](https://designisagoodidea-2026.github.io/claude-dt-system/)
 
 ## What this is
 
-A POC concept exploring what design thinking workshops look like when re-architected around the capabilities AI now brings: delegate agents that represent participants, live sense-making over conversation, real-time tangibility, and a meta-layer that learns from each session and improves the next.
+A POC concept exploring what design thinking workshops look like when re-architected around the capabilities AI now brings: delegate agents that represent participants, a main orchestrator that dials each agent's volume up and down by phase, a shared multiplayer canvas + workshop HUD, a real-time skill exchange that grows the group's collective toolkit during the session, and a meta-layer architect that spawns the workshop, governs access, updates the configuration mid-flight, and learns from each session to improve the next.
 
-Scrub the lifecycle to see which subsystems activate at each stage.
+Scroll through the three acts: **Before** (architect spawns the workshop), **During** (humans gather; scrub the lifecycle), **After** (synthesis + architect learns). The system architecture is the sticky constant — it stays in view as the surrounding scenes move past it.
 
 ## The premise
 
-Design thinking's principles are durable — human centricity, divergence and convergence in distinct problem and solution spaces, diversity in participation, tangibility through prototyping. What's becoming re-architectable is the workshop's *meta*: who participates, how context arrives, how convergence is enacted, and how the practice itself learns over time.
+Design thinking's principles are durable — human centricity, divergence and convergence in distinct problem and solution spaces, diversity in participation, tangibility through prototyping. What's becoming re-architectable is the workshop's *meta*: who participates, how context arrives, how convergence is enacted, how the group's collective toolkit grows during the session, and how the practice itself learns over time.
+
+The event itself is fundamentally **humans coming together to discuss something that matters**. The system supports, surrounds, and accelerates — it doesn't replace the humans in the room.
 
 ## What the diagram shows
 
-- **Meta layer (Workshop architect)** — sits outside the workshop. Takes intent from the facilitator, consults a pattern library, composes a tuned instance, and learns from each session via sentiment + outcomes feedback.
-- **Workshop lifecycle** — eight phases from Spawn through Post-event, with the classic double-diamond mapped to phases 3–6.
-- **System architecture** — four layers (Input, Context, Intelligence, Output) with twelve components that activate per phase.
-
-## Setup (one-time)
-
-This is a single self-contained HTML file. To publish:
-
-1. In this repo's **Settings → Pages**, set source to `main` branch, `/` (root).
-2. Wait ~30 seconds; the live URL appears at the top of the same page.
-3. Update the **Live demo** link above with that URL.
+- **Meta layer (Workshop architect)** — sits outside the workshop. Six components: Intent intake, Pattern library, Composer, Updater (live updates mid-flight), Permissions (governance), Outcomes store (post-event learning).
+- **System architecture** — 14 subsystems across four layers:
+  - *Input* — voice ingest, transcription, speaker diarization
+  - *Context* — indexed org IP, pre-event research, skill exchange
+  - *Orchestration* — main orchestrator, delegate agents, research agents, facilitator agent, sense-making layer
+  - *Output* — shared canvas, decision capture, post-event synthesis
+- **Workshop lifecycle** — six scrubable phases from Opening through Decision, with the classic double-diamond mapped to phases 2–5.
 
 ## Author
 
@@ -34,4 +32,4 @@ Jason Armstrong — senior Design Operations / Design Strategy leader. 25+ years
 
 ## Status
 
-POC concept · v0.3 · scrubable system view. Built with Claude.
+POC concept · v0.9 · scrollytelling presentation. Built iteratively with Claude. Source is a single self-contained `index.html` file with no build step.
